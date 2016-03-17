@@ -48,3 +48,5 @@ MicroService.Console/bin/
 MicroService.Application/obj/
 MicroFramework/bin/
 MicroFramework/obj/
+MicroService.WebApp/obj/
+MicroService.Application/bin/
