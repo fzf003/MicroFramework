@@ -8,24 +8,30 @@ namespace MicroFramework.Impl
 {
     public class DefaultCommandContext : ICommandContext
     {
+        private readonly ICommand _command;
+        private readonly ICommandHandler _commandhandler;
 
         public DefaultCommandContext(ICommand command, ICommandHandler commandhandler)
         {
-            this.Command = command;
-            this.CommandHandler = commandhandler;
+            this._command = command;
 
-        }
+            this._commandhandler = commandhandler;
+         }
 
         public ICommandHandler CommandHandler
         {
-            get;
-            private set;
+            get
+            {
+                return this._commandhandler;
+            }
         }
 
         public ICommand Command
         {
-            get;
-            private set;
+            get
+            {
+                return this._command;
+            }
         }
 
     }

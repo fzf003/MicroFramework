@@ -27,11 +27,16 @@ namespace MicroFramework.Impl
             return this._commandBus.Dispatch(busCommand);
         }
 
-        public async Task PublishAsync(IEvent busEvent)
+        static string TypeToTopic(Type type)
+        {
+            return type.Name;
+        }
+
+        public  Task PublishAsync(IEvent busEvent)
         {
             if (busEvent == null) throw new ArgumentNullException(busEvent.GetType().Name);
 
-            await Task.Run(() => this._eventBus.Publish(busEvent));
+             return Task.Run(() => this._eventBus.Publish(busEvent));
         }
 
         public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> busQuery)
@@ -46,5 +51,13 @@ namespace MicroFramework.Impl
         }
 
 
+
+
+        public  Task PublishAsync(IEnumerable<IEvent> busEvents)
+        {
+            if (busEvents == null) throw new ArgumentNullException(busEvents.GetType().Name);
+
+             return Task.Run(() => this._eventBus.Publish(busEvents));
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroFramework
 {
-    public interface IResult
+    public interface ICommandResult
     {
     }
 }

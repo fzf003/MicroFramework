@@ -15,7 +15,7 @@ namespace MicroFramework
     public interface ICommandHandler<TCommand> : ICommandHandler
          where TCommand : ICommand
     {
-        Task<object> ExecuteAsync(TCommand command);
+        Task<ICommandResult> ExecuteAsync(TCommand command);
     }
 
 }

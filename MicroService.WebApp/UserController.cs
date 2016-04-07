@@ -52,7 +52,7 @@ namespace MicroService.Web
         {
             return await this.servicebus.SendAsync(new ChangeNameCommand()
             {
-                Id = 1,
+                Id = "1",
 
                 Name = value
             });

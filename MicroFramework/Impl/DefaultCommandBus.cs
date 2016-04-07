@@ -13,15 +13,18 @@ namespace MicroFramework.Impl
         class CommandExecutionDetails
         {
             public Type CommandHandlerType { get; set; }
-            public Func<ICommandHandler, ICommand, Task<object>> Invoker { get; set; }
+            public Func<ICommandHandler, ICommand, Task<ICommandResult>> Invoker { get; set; }
             public ICommandContext CommandContext { get; set; }
         }
 
         ConcurrentDictionary<Type, CommandExecutionDetails> CommandExecutionMap = new ConcurrentDictionary<Type, CommandExecutionDetails>();
  
         private readonly CommandResultProcessor _CommandResultProcessor;
+
         private readonly BlockingCollection<ICommand> _ExecuteCommandQueue;
+
         private readonly Worker _worker;
+
         public DefaultCommandBus()
         {
             this._CommandResultProcessor = new CommandResultProcessor();
@@ -37,7 +40,7 @@ namespace MicroFramework.Impl
             this._CommandResultProcessor.RegisterProcessingCommand(command, tcs);
 
             this._ExecuteCommandQueue.Add(command);
-                       
+
             return tcs.Task;
         }
 
@@ -50,6 +53,7 @@ namespace MicroFramework.Impl
             var handle = ServiceLocator.Current.GetInstance(handler.CommandHandlerType);
 
             var context = new DefaultCommandContext(command, (ICommandHandler)handle);
+
             try
             {
                 handler.Invoker(context.CommandHandler, context.Command).ContinueWith(task =>
@@ -68,7 +72,6 @@ namespace MicroFramework.Impl
             }
             catch (Exception ex)
             {
-                  
                 Console.WriteLine("agg:{0}", ex.InnerException.Message);
                 this._CommandResultProcessor.ProcessFailedSendingCommand(context.Command,ex);
                  
@@ -100,7 +103,7 @@ namespace MicroFramework.Impl
                         CommandHandlerType = commandHandlerType,
                         Invoker = ((h, command) =>
                         {
-                            return (Task<object>)invoker.Invoke(h, new object[] { command });
+                            return (Task<ICommandResult>)invoker.Invoke(h, new object[] { command });
                         })
                     };
                 });

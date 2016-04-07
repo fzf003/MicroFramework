@@ -50,3 +50,7 @@ MicroFramework/bin/
 MicroFramework/obj/
 MicroService.WebApp/obj/
 MicroService.Application/bin/
+OrderService/bin/
+Order.Application/obj/
+Order.Application/bin/
+OrderService/obj/
